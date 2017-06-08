@@ -1,9 +1,4 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Introduction
@@ -36,9 +31,15 @@ activity <- read.csv("activity.csv")
 
 Looking at the data using `head`, we see there are NAs in the data.
 
-```{r echo = FALSE}
-activity <- read.csv("activity.csv")
-head(activity)
+
+```
+##   steps       date interval
+## 1    NA 2012-10-01        0
+## 2    NA 2012-10-01        5
+## 3    NA 2012-10-01       10
+## 4    NA 2012-10-01       15
+## 5    NA 2012-10-01       20
+## 6    NA 2012-10-01       25
 ```
 
 Since there are NAs in the data, we will omit the NAs for future analyses.
@@ -71,11 +72,9 @@ hist(total.steps, col = "green", main = "",
 mean(total.steps)
 ```
 
-```{r echo = FALSE}
-activity.na <- na.omit(activity)
-activity.na$date <- as.Date(activity.na$date)
-total.steps <- tapply(activity.na$steps, activity.na$date, sum)
-mean(total.steps)
+
+```
+## [1] 10766.19
 ```
 
 We get an output of **10766.19**.
@@ -86,8 +85,9 @@ We get an output of **10766.19**.
 median(total.steps)
 ```
 
-```{r echo = FALSE}
-median(total.steps)
+
+```
+## [1] 10765
 ```
 
 We get an output of **10765**.
@@ -125,12 +125,10 @@ maximuminterval <- activity.mean[which.max(activity.mean$steps),]
 maximuminterval
 ```
 
-```{r echo = FALSE}
-activity.mean <- aggregate(x = list(steps = activity.na$steps),
-                by = list(interval = activity.na$interval), 
-                FUN = mean)
-maximuminterval <- activity.mean[which.max(activity.mean$steps),]
-maximuminterval
+
+```
+##     interval    steps
+## 104      835 206.1698
 ```
 
 We get an output of maximum interval = **835** at the **206th** step.
@@ -147,9 +145,9 @@ activitywithNA <- sum(is.na(activity$steps))
 activitywithNA
 ```
 
-```{r echo = FALSE}
-activitywithNA <- sum(is.na(activity$steps))
-activitywithNA
+
+```
+## [1] 2304
 ```
 
 We get an output of **2304**.
@@ -179,20 +177,15 @@ activity.steps <- tapply(activity.fill$steps, activity.fill$date, FUN = sum)
 
 Let's take a look at the data with the filled missing values.
 
-```{r echo = FALSE}
-mean.fill.interval <- function(steps, interval) {
-  filled.interval <- NA
-  if (!is.na(steps))
-    filled.interval <- c(steps)
-  else
-    filled.interval <- (activity.mean[activity.mean$interval == interval, "steps"])
-  return(filled.interval)
-}
-activity.fill <- activity
-activity.fill$steps <- mapply(mean.fill.interval, activity.fill$steps, 
-                              activity.fill$interval)
-activity.steps <- tapply(activity.fill$steps, activity.fill$date, FUN = sum)
-head(activity.fill)
+
+```
+##       steps       date interval
+## 1 1.7169811 2012-10-01        0
+## 2 0.3396226 2012-10-01        5
+## 3 0.1320755 2012-10-01       10
+## 4 0.1509434 2012-10-01       15
+## 5 0.0754717 2012-10-01       20
+## 6 2.0943396 2012-10-01       25
 ```
 
 **4. Make a histogram of the total number of steps taken each day.**
@@ -210,8 +203,9 @@ hist(activity.steps, col = "green", main = "",
 mean(activity.steps)
 ```
 
-```{r echo = FALSE}
-mean(activity.steps)
+
+```
+## [1] 10766.19
 ```
 We get an output of **10766.19**.
 
@@ -221,8 +215,9 @@ We get an output of **10766.19**.
 median(activity.steps)
 ```
 
-```{r echo = FALSE}
-median(activity.steps)
+
+```
+## [1] 10766.19
 ```
 
 We get an output of **10766.19**.
@@ -243,13 +238,15 @@ activity.fill$day <- as.factor(sapply(activity.fill$date, activity.day))
 
 Let's take a look at the data with the newly inputted weekdays.
 
-```{r echo = FALSE}
-activity.day <- function(date) {
-  if (weekdays(as.Date(date)) %in% c("Saturday", "Sunday")) {"weekend"}
-  else {"weekday"}
-} 
-activity.fill$day <- as.factor(sapply(activity.fill$date, activity.day))
-head(activity.fill)
+
+```
+##       steps       date interval     day
+## 1 1.7169811 2012-10-01        0 weekday
+## 2 0.3396226 2012-10-01        5 weekday
+## 3 0.1320755 2012-10-01       10 weekday
+## 4 0.1509434 2012-10-01       15 weekday
+## 5 0.0754717 2012-10-01       20 weekday
+## 6 2.0943396 2012-10-01       25 weekday
 ```
 
 
