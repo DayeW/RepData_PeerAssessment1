@@ -80,7 +80,7 @@ hist(total.steps, col = "green", main = "",
     xlab = "Total Number of Steps per Day", breaks = 15)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+![https://github.com/DayeW/RepData_PeerAssessment1/blob/master/figures/Total_steps_per_day.png](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
 ### Calculate the mean and median of total steps per day
 
@@ -133,7 +133,7 @@ ggplot(activity.mean, aes(x = interval, y = steps)) +
       ylab("Average Number of Steps Across all Days")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+![https://github.com/DayeW/RepData_PeerAssessment1/blob/master/figures/Ave_Num_Steps_by_Interval.png](PA1_template_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
 **2. Maximum number of steps** 
 
@@ -214,7 +214,7 @@ hist(activity.steps, col = "green", main = "",
     xlab = "Total steps per day", breaks = 15)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+![https://github.com/DayeW/RepData_PeerAssessment1/blob/master/figures/Total_steps_per_day_with_filledNAs.png](PA1_template_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
 **Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?**
 
@@ -280,7 +280,7 @@ ggplot(activity.final, aes(interval, steps)) +
   facet_grid(day ~ .) + xlab("5 minute interval") + ylab("Number of steps")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
+![https://github.com/DayeW/RepData_PeerAssessment1/blob/master/figures/Ave_Num_Steps_by_Weekdays.png](PA1_template_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
 
 From what the time plot shows us, there appears to be a difference in activity patterns between weekdays and weekends. 
 
