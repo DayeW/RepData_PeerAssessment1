@@ -38,7 +38,8 @@ library(dplyr)
 
 Assuming that the reader has set their working directory using the `setwd` function to the folder of their choice, listed below are the steps to unzip and read the data file, which can be downloaded from [here](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip).
 
-```
+
+```r
 unzip("activity.zip")
 activity <- read.csv("activity.csv")
 ```
@@ -47,6 +48,10 @@ activity <- read.csv("activity.csv")
 
 Looking at the data using `head`, we see there are NAs in the data.
 
+
+```r
+head(activity)
+```
 
 ```
 ##   steps       date interval
@@ -60,7 +65,8 @@ Looking at the data using `head`, we see there are NAs in the data.
 
 Since there are NAs in the data, we will omit the NAs for future analyses.
 
-```
+
+```r
 activity.na <- na.omit(activity)
 ```
 
@@ -69,43 +75,47 @@ activity.na <- na.omit(activity)
 
 **1. Calculate the total number of steps per day**
 
-```
+
+```r
 total.steps <- tapply(activity.na$steps, activity.na$date, sum)
 ```
 
 **2. Plot the total number of steps per day into a histogram**
 
-```
+
+```r
 hist(total.steps, col = "green", main = "", 
     xlab = "Total Number of Steps per Day", breaks = 15)
 ```
 
-![https://github.com/DayeW/RepData_PeerAssessment1/blob/master/figures/Total_steps_per_day.png](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+![](PA1_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+
 
 ### Calculate the mean and median of total steps per day
 
 **1. Mean**
 
-```
+
+```r
 mean(total.steps)
 ```
 
-
 ```
-## [1] 10766.19
+## [1] NA
 ```
 
 We get an output of **10766.19**.
 
 **2. Median**
 
-```
+
+```r
 median(total.steps)
 ```
 
-
 ```
-## [1] 10765
+## <NA> 
+##   NA
 ```
 
 We get an output of **10765**.
@@ -117,7 +127,8 @@ We get an output of **10765**.
 
 Here, we take the average number of steps across all days.
 
-```
+
+```r
 activity.mean <- aggregate(x = list(steps = activity.na$steps),
                 by = list(interval = activity.na$interval), 
                 FUN = mean)
@@ -125,7 +136,8 @@ activity.mean <- aggregate(x = list(steps = activity.na$steps),
 
 **Next, we plot the interval (x-axis) and the averaged number of steps across all days (y-axis).**
 
-```
+
+```r
 ggplot(activity.mean, aes(x = interval, y = steps)) +
       geom_line(color = "green", size = 0.5) + 
       theme_bw() +
@@ -133,17 +145,18 @@ ggplot(activity.mean, aes(x = interval, y = steps)) +
       ylab("Average Number of Steps Across all Days")
 ```
 
-![https://github.com/DayeW/RepData_PeerAssessment1/blob/master/figures/Ave_Num_Steps_by_Interval.png](PA1_template_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+![](PA1_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+
 
 **2. Maximum number of steps** 
 
 Now, we find the 5 minute-interval value, on average for across all days in the dataset, for the maximum number of steps.
 
-```
+
+```r
 maximuminterval <- activity.mean[which.max(activity.mean$steps),]
 maximuminterval
 ```
-
 
 ```
 ##     interval    steps
@@ -159,11 +172,11 @@ Note that there are a number of days that were coded `NA`. The presence of missi
 
 **1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)**
 
-```
+
+```r
 activitywithNA <- sum(is.na(activity$steps))
 activitywithNA
 ```
-
 
 ```
 ## [1] 2304
@@ -177,7 +190,8 @@ We will use the mean value for the 5-minute intervals to fill in all of the miss
 
 **3. Create a new dataset that is equal to the original dataset but with the missing data filled in.**
 
-```
+
+```r
 ##Replaced each missing value with the mean of the corresponding interval value (see stack overflow "Replacing Missing Values in R with Column Mean")
 
 mean.fill.interval <- function(steps, interval) {
@@ -197,6 +211,10 @@ activity.steps <- tapply(activity.fill$steps, activity.fill$date, FUN = sum)
 Let's take a look at the data with the filled missing values.
 
 
+```r
+head(activity.fill)
+```
+
 ```
 ##       steps       date interval
 ## 1 1.7169811 2012-10-01        0
@@ -209,33 +227,35 @@ Let's take a look at the data with the filled missing values.
 
 **4. Make a histogram of the total number of steps taken each day.**
 
-```
+
+```r
 hist(activity.steps, col = "green", main = "", 
     xlab = "Total steps per day", breaks = 15)
 ```
 
-![https://github.com/DayeW/RepData_PeerAssessment1/blob/master/figures/Total_steps_per_day_with_filledNAs.png](PA1_template_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+![](PA1_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
 
 **Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?**
 
 **1. Mean:**
 
-```
+
+```r
 mean(activity.steps)
 ```
-
 
 ```
 ## [1] 10766.19
 ```
+
 We get an output of **10766.19**.
 
 **2. Median:**
 
-```
+
+```r
 median(activity.steps)
 ```
-
 
 ```
 ## [1] 10766.19
@@ -249,7 +269,8 @@ For this part, the assignment asks us to use the dataset with the filled-in miss
 
 **1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.**
 
-```
+
+```r
 activity.day <- function(date) {
   if (weekdays(as.Date(date)) %in% c("Saturday", "Sunday")) {"weekend"}
   else {"weekday"}
@@ -259,6 +280,10 @@ activity.fill$day <- as.factor(sapply(activity.fill$date, activity.day))
 
 Let's take a look at the data with the newly inputted weekdays.
 
+
+```r
+head(activity.fill)
+```
 
 ```
 ##       steps       date interval     day
@@ -273,14 +298,15 @@ Let's take a look at the data with the newly inputted weekdays.
 
 **2. Make a panel plot containing a time series plot (i.e. type = "1") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).**
 
-```
+
+```r
 activity.final <- aggregate(steps ~ interval + day, activity.fill, mean)
 ggplot(activity.final, aes(interval, steps)) + 
   geom_line(color = "green") + theme_bw() +
   facet_grid(day ~ .) + xlab("5 minute interval") + ylab("Number of steps")
 ```
 
-![https://github.com/DayeW/RepData_PeerAssessment1/blob/master/figures/Ave_Num_Steps_by_Weekdays.png](PA1_template_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
+![](PA1_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
 
 From what the time plot shows us, there appears to be a difference in activity patterns between weekdays and weekends. 
 
