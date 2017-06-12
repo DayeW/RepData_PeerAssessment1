@@ -75,7 +75,7 @@ total.steps <- tapply(activity.na$steps, activity.na$date, sum)
 
 **2. Plot the total number of steps per day into a histogram**
 
-```
+```{r total_steps_per_day_histogram, fig.keep="all", fig.show="asis"}
 hist(total.steps, col = "green", main = "", 
     xlab = "Total Number of Steps per Day", breaks = 15)
 ```
